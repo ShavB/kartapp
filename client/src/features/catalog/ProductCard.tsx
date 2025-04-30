@@ -21,7 +21,8 @@ export default function ProductCard({ product }: Props) {
         borderRadius: 3,
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center"
+        justifyContent: "center",
+        cursor: "pointer"
       }}
     >
       <CardMedia

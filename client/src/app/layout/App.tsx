@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
 import { Product } from "../models/product";
 import Catalog from "../../features/catalog/Catalog";
-import { Box, Container, createTheme, CssBaseline, ThemeProvider } from "@mui/material";
+import {
+  Box,
+  Container,
+  createTheme,
+  CssBaseline,
+  ThemeProvider,
+} from "@mui/material";
 import Navbar from "./Navbar";
+import Shimmer from "../../features/ShimmerUI/Shimmer";
 
 function App() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -20,8 +27,8 @@ function App() {
   });
 
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-  }
+    setDarkMode(!darkMode);
+  };
 
   useEffect(() => {
     fetch("https://localhost:5001/api/products")
@@ -29,17 +36,19 @@ function App() {
       .then((data) => setProducts(data));
   }, []);
 
-  return (
+  return products.length === 0 ? (
+    <Shimmer />
+  ) : (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode}  />
+      <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
       <Box
         sx={{
           minHeight: "100vh",
-          background: darkMode ?  "#121212" : "#eaeaea"
+          background: darkMode ? "#121212" : "#eaeaea",
         }}
       >
-        <Container maxWidth="xl" sx={{ mt: 14 }}>
+        <Container maxWidth="xl" sx={{ mt: 8, mb: 4 }}>
           <Catalog products={products} />
         </Container>
       </Box>
