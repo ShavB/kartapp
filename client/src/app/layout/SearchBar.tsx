@@ -1,6 +1,5 @@
 import { Box, TextField } from "@mui/material";
 import { Product } from "../models/product";
-import { use, useState } from "react";
 
 type Props = {
   products: Product[];

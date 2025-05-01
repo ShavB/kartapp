@@ -2,18 +2,23 @@ import { Box } from "@mui/material";
 import { Product } from "../../app/models/product";
 import ProductList from "./ProductList";
 import SearchBar from "../../app/layout/SearchBar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import Shimmer from "../../features/ShimmerUI/Shimmer";
+import useProductData from "../../utils/Customhooks/useProductData";
+import useOnlineStatus from "../../utils/Customhooks/useOnlineStatus";
 
-type Props = {
-  products: Product[];
-};
-
-export default function Catalog({ products }: Props) {
+export default function Catalog() {
+  const [products, setProducts] = useState<Product[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const [filterProducts, setFilterProducts] = useState(products);
+  // custom hook
+  // get fetch data here
+  // const productData = useProductData();
+  const productList = useProductData();
+  const onlineStatus = useOnlineStatus();
+  const [filterProducts, setFilterProducts] = useState(productList);
 
   const handleInputSearch = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setFilterProducts(products);
+    setFilterProducts(productList);
     setInputValue(event.target.value);
   };
 
@@ -27,7 +32,20 @@ export default function Catalog({ products }: Props) {
       setInputValue("");
     }
   }
-  return (
+
+  useEffect(() => {
+    if (productList.length > 0) {
+      setProducts(productList);
+      setFilterProducts(productList);
+    }
+  }, [productList]);
+
+  if (onlineStatus === false)
+    return <h1>looks like you're offline, please check your connection!!!</h1>;
+
+  return products.length === 0 ? (
+    <Shimmer />
+  ) : (
     <Box sx={{ display: "flex", flexDirection: "column" }}>
       <SearchBar
         products={products}
