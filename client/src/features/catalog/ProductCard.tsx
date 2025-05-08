@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Card,
   CardActions,
@@ -23,7 +24,7 @@ export default function ProductCard({ product }: Props) {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        cursor: "pointer"
+        cursor: "pointer",
       }}
     >
       <CardMedia
@@ -45,8 +46,21 @@ export default function ProductCard({ product }: Props) {
       </CardContent>
       <CardActions sx={{ justifyContent: "space-between" }}>
         <Button>Add to Cart</Button>
-        <Button component={Link} to={`/catalog/${product.id}`}>View</Button>
+        <Button component={Link} to={`/catalog/${product.id}`}>
+          View
+        </Button>
       </CardActions>
     </Card>
   );
 }
+
+export const isPromotedLabel = (ProductCard) => {
+  return (props) => {
+    return (
+      <Box>
+        <Typography>Promoted</Typography>
+        <ProductCard {...props}/>
+      </Box>
+    );
+  };
+};

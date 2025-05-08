@@ -12,11 +12,33 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import Accordian from "../accordian/Accordian";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../../utils/store/cartSlice";
+import { CartItems } from "../../utils/store/cartSlice";
+import { Product } from "../../app/models/product";
 
 export default function ProductDetails() {
+  const [showIndex, setShowIndex] = useState(null);
   const { id } = useParams<{ id: string }>();
-
+  const tabName = ["name", "description", "brand"];
   const product = useProduct({ id });
+  console.log(product);
+  const dispatch = useDispatch();
+
+  const handleAddToCart = (product) => {
+    // dispatch an action -> call to the reducer function
+    const item: CartItems = {
+      id: product.id,
+      name: product.name,
+      quantity: product.quantityInStock,
+      price: product.price,
+      image: product.pictureUrl,
+      description: product.description,
+    };
+    dispatch(addItem(item));
+  };
 
   return (
     <Card
@@ -50,6 +72,24 @@ export default function ProductDetails() {
                 color={product?.quantityInStock > 0 ? "success" : "error"}
               />
             </Box>
+            {tabName.map((tab, index) => (
+              <Box
+                key={tab}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  mt: 2,
+                }}
+              >
+                <Accordian
+                  tabName={tab}
+                  product={product}
+                  showItems={index === showIndex ? true : false}
+                  setShowIndex={() => setShowIndex(index)}
+                />
+              </Box>
+            ))}
             <Box sx={{ mt: 10 }}>
               <Grid size={8} spacing={4}>
                 <TextField
@@ -58,7 +98,11 @@ export default function ProductDetails() {
                   sx={{ mr: 1 }}
                   placeholder="Quantity..."
                 />
-                <Button variant="outlined" sx={{ padding: 1.8 }}>
+                <Button
+                  onClick={() => handleAddToCart(product)}
+                  variant="outlined"
+                  sx={{ padding: 1.8 }}
+                >
                   Add to Cart
                 </Button>
               </Grid>

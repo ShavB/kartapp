@@ -10,9 +10,12 @@ import {
   Typography,
 } from "@mui/material";
 import { useState } from "react";
-import { NavLink } from "react-router";
+import { Link, NavLink } from "react-router";
 import useOnlineStatus from "../../utils/Customhooks/useOnlineStatus";
 import { TimelineDot } from "@mui/lab";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useSelector } from "react-redux";
+import { RootState } from "../../utils/store/appStore";
 
 const navLinks = [
   { title: "catalog", path: "/catalog" },
@@ -29,6 +32,8 @@ type Props = {
 export default function Navbar({ darkMode, toggleDarkMode }: Props) {
   const [isLoggedIn, setIsLoggedOut] = useState(false);
   const onlineStatus = useOnlineStatus();
+
+  const cartItemsLength = useSelector((store: RootState) => store.cart.items);
 
   return (
     <AppBar>
@@ -47,13 +52,21 @@ export default function Navbar({ darkMode, toggleDarkMode }: Props) {
               </ListItem>
             ))}
           </List>
+          <Button
+            component={Link}
+            to={"/cart"}
+            sx={{ color: "inherit", typography: "h10" }}
+          >
+            <ShoppingCartIcon /> {`(${cartItemsLength.length} items)`}
+          </Button>
+
           <IconButton onClick={toggleDarkMode}>
             {darkMode ? <DarkMode /> : <LightMode />}
           </IconButton>
           <Button onClick={() => setIsLoggedOut(!isLoggedIn)} color="inherit">
             {isLoggedIn ? "Logout" : "Login"}
           </Button>
-          <TimelineDot color={onlineStatus === true ? "success" : "warning"}/>
+          <TimelineDot color={onlineStatus === true ? "success" : "warning"} />
         </Box>
       </Toolbar>
     </AppBar>

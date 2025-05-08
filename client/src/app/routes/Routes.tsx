@@ -8,6 +8,7 @@ import ProductDetails from "../../features/catalog/ProductDetails";
 import ErrorPage from "../../features/Error/ErrorPage";
 import { lazy, Suspense } from "react";
 import Shimmer from "../../features/ShimmerUI/Shimmer";
+import Cart from "../../features/cart/Cart";
 
 const Grocery = lazy(() => import("../Grocery/Grocery"));
 
@@ -22,6 +23,7 @@ export const router = createBrowserRouter([
       { path: "/catalog/:id", element: <ProductDetails /> },
       { path: "/about", element: <AboutPage /> },
       { path: "/contact", element: <ContactPage /> },
+      { path: "/cart", element: <Cart /> },
       {
         path: "/grocery",
         element: (

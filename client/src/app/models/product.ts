@@ -7,5 +7,6 @@ export type Product = {
     type: string
     brand: string
     quantityInStock: number
+    isPromoted: boolean
   }
   

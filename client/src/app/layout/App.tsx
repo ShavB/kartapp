@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Catalog from "../../features/catalog/Catalog";
 import {
   Box,
   Container,
@@ -9,6 +8,9 @@ import {
 } from "@mui/material";
 import Navbar from "./Navbar";
 import { Outlet } from "react-router";
+import { Provider } from "react-redux";
+import appStore from "../../utils/store/appStore";
+
 function App() {
   const [darkMode, setDarkMode] = useState(true);
 
@@ -28,6 +30,7 @@ function App() {
   };
 
   return (
+    <Provider store={appStore}>
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Navbar darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
@@ -42,6 +45,7 @@ function App() {
         </Container>
       </Box>
     </ThemeProvider>
+    </Provider>
   );
 }
 
